@@ -668,3 +668,98 @@ int Passenger_sortByStatusFlight(void *pPrimerPasajero, void *pSegundoPasajero) 
 	}
 	return retorno;
 }
+
+int Passenger_compareFirstClass(void *pPasajero){
+	int retorno = -1;
+	int typePassenger;
+
+	if(pPasajero != NULL){
+		Passenger_getTypePassenger(pPasajero, &typePassenger);
+
+			if(typePassenger == 3){
+				retorno = 1;
+			} else {
+				retorno = 0;
+			}
+	}
+
+	return retorno;
+}
+
+int Passenger_compareExecutiveClass(void *pPasajero){
+	int retorno = -1;
+	int typePassenger;
+	if(pPasajero != NULL){
+
+		Passenger_getTypePassenger(pPasajero, &typePassenger);
+
+			if(typePassenger == 2){
+				retorno = 1;
+			} else {
+				retorno = 0;
+			}
+
+	}
+	return retorno;
+}
+
+int Passenger_compareEconomyClass(void *pPasajero){
+	int retorno = -1;
+	int typePassenger;
+	if(pPasajero != NULL){
+		Passenger_getTypePassenger(pPasajero, &typePassenger);
+
+			if(typePassenger == 1){
+				retorno = 1;
+			} else {
+				retorno = 0;
+			}
+
+		}
+	return retorno;
+}
+
+int Passenger_setMillasAcumuladas(Passenger *this, int millasAcumuladas) {
+	int retorno = -1;
+	if (this != NULL && millasAcumuladas > 0) {
+		this->millasAcumuladas = millasAcumuladas;
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int Passenger_getMillasAcumuladas(Passenger *this, int *millasAcumuladas) {
+	int retorno = -1;
+	if (this != NULL && millasAcumuladas != NULL) {
+		*millasAcumuladas = this->millasAcumuladas;
+		retorno = 0;
+	}
+	return retorno;
+}
+
+Passenger* calcularMillasAcumuladas(void *pPasajero){
+	int millas;
+	float precioPasajero;
+	int typePassenger;
+	Passenger * pasajero = (Passenger*)pPasajero;
+	Passenger_getTypePassenger(pasajero, &typePassenger);
+
+	if(pasajero != NULL){
+		Passenger_getPrecio(pasajero, &precioPasajero);
+
+		millas = (int)precioPasajero / 100;
+
+		if(typePassenger == 3){
+			millas = millas * 2;
+		} else if(typePassenger == 2){
+			millas = millas * 3;
+		}
+
+		Passenger_setMillasAcumuladas(pasajero, millas);
+
+	}
+
+
+	return pasajero;
+}
+

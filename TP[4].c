@@ -22,7 +22,18 @@ int main() {
 	int flagGuardarAlgo = 0; //0 para nada Guardado, 1 Para Guardado csv, 2 Para Guardaro desde bin
 	int llLen;
 	int confirmacionExit = 0;
+	int opcionInformes;
+	int algoFallo = 0;
+
+
+
+	int conteoEconomy;
+	int conteoExecutive;
+	int conteoFirst;
 	LinkedList *listaPasajeros = ll_newLinkedList();
+
+	LinkedList *listaClase;
+	int lenClase;
 	do {
 		option = printMenuPrincipal();
 		switch (option) {
@@ -117,8 +128,41 @@ int main() {
 			}
 			break;
 		case 10:
-			printf("\nINFORMES\n");
-			break;
+			utn_getNumero(&opcionInformes, "\n1. Pasajeros por clase:\n2. Generar archivo de vuelos:\n"
+					"3. Calcular millas acumuladas:", "\nIngrese una opcion valida.", 1, 3, 5);
+			switch(opcionInformes){
+			case 1:
+				printf("\nINFORMES\n");
+
+			conteoEconomy = ll_count(listaPasajeros, Passenger_compareEconomyClass);
+			conteoExecutive = ll_count(listaPasajeros, Passenger_compareExecutiveClass);
+			conteoFirst = ll_count(listaPasajeros, Passenger_compareFirstClass);
+			printf("\nCANTIDAD ECONOMY CLASS: %d", conteoEconomy);
+			printf("\nCANTIDAD EXECUTIVE CLASS: %d", conteoExecutive);
+			printf("\nCANTIDAD FIRST CLASS: %d", conteoFirst);
+				break;
+			case 2:
+					listaClase = ll_filter(listaPasajeros, Passenger_compareFirstClass);
+					lenClase = ll_len(listaClase);
+					algoFallo = 0;
+					controller_ListPassenger(listaClase);
+					for(int i = 0; i < lenClase; i++){
+						if(controller_saveAsText("CLASES.csv", listaClase) != 0){
+							algoFallo = -1;
+						}
+					}
+					if(algoFallo != -1){
+						printf("\n-El archivo de pasajeros first class se guardo OK-\n");
+					}
+				break;
+			case 3:
+				ll_map(listaPasajeros, calcularMillasAcumuladas);
+				controller_ListPassengerMillas(listaPasajeros);
+				break;
+			}
+
+		break;
+
 		case 11:
 			if (flagGuardarAlgo == 0) {
 				utn_getNumero(&confirmacionExit,

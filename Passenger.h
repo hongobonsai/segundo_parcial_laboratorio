@@ -19,11 +19,23 @@ typedef struct
 	char flyCode[8];
 	int typePassenger;
 	char statusFlight[50];
+	int millasAcumuladas;
 
 }Passenger;
 
 Passenger* Passenger_new();
 Passenger* Passenger_newParametros(char *idStr, char *nombreStr, char *apellidoStr, char *precioStr, char *flyCodeStr, char *typePassengerStr, char *statusFlightStr);
+
+int Passenger_compareFirstClass(void *pPasajero);
+int Passenger_compareEconomyClass(void *pPasajero);
+int Passenger_compareExecutiveClass(void *pPasajero);
+
+int Passenger_setMillasAcumuladas(Passenger *this, int millasAcumuladas);
+int Passenger_getMillasAcumuladas(Passenger *this, int *millasAcumuladas);
+Passenger* calcularMillasAcumuladas(void *pPasajero);
+int controller_ListPassengerMillas(LinkedList *listaPasajeros);;
+
+
 void Passenger_delete();
 
 int Passenger_setId(Passenger* this,int id);

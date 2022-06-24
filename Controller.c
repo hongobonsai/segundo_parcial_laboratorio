@@ -459,3 +459,51 @@ int controller_saveLastId(char *path, char *idParaAsignar) {
 
 	return retorno;
 }
+
+int controller_ListPassengerMillas(LinkedList *pArrayListPassenger) {
+	int retorno = -1;
+	Passenger *punteroAUnPasajero;
+
+	int id;
+	char nombre[51];
+	char apellido[51];
+	float precio;
+	char flyCode[8];
+	int typePassenger;
+	char statusFlight[11];
+	int millas;
+
+	char typePassengerStr[15];
+	int llLen;
+
+	if (pArrayListPassenger != NULL) {
+		llLen = ll_len(pArrayListPassenger);
+		if (llLen > 0) {
+			printf(
+					"\n+---------+----------------+----------------+-----------+---------+------------------+----------------+-------------+");
+			printf(
+					"\n|ID       |NOMBRE          |APELLIDO        |PRECIO     |FLYCODE  |TIPO DE PASAJERO  |ESTADO DE VUELO | MILLAS      |");
+			printf(
+					"\n+---------+----------------+----------------+-----------+---------+------------------+----------------+-------------+\n");
+			for (int i = 0; i < llLen; i++) {
+				punteroAUnPasajero = (Passenger*) ll_get(pArrayListPassenger,
+						i);
+				Passenger_getAllElements(punteroAUnPasajero, &id, nombre,
+						apellido, &precio, flyCode, &typePassenger,
+						statusFlight);
+				Passenger_getMillasAcumuladas(punteroAUnPasajero, &millas);
+
+				Passenger_IntToTypePassenger(typePassenger, typePassengerStr);
+				printf("| %-8d| %-15s| %-15s| %-10.2f| %-8s| %-17s| %-15s| %-6dMill  |\n",
+						id, nombre, apellido, precio, flyCode, typePassengerStr,
+						statusFlight, millas);
+				retorno = 0;
+			}
+			printf(
+					"+---------+----------------+----------------+-----------+---------+------------------+----------------+-------------+\n");
+		}
+
+	}
+
+	return retorno;
+}
